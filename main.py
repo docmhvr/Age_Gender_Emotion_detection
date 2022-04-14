@@ -8,9 +8,9 @@ import pickle
 detector = MTCNN()
 
 # load the model
-sex_model = pickle.load(open('./model/sex-model-final.pkl', 'rb'))
-age_model = pickle.load(open('./model/age-model-final.pkl', 'rb'))
-emotion_model = pickle.load(open('./model/emotion-model-final.pkl', 'rb'))
+sex_model = pickle.load(open('./../model/sex-model-final.pkl', 'rb'))
+age_model = pickle.load(open('./../model/age-model-final.pkl', 'rb'))
+emotion_model = pickle.load(open('./../model/emotion-model-final.pkl', 'rb'))
 
 def rgb2gray(rgb):
     r, g, b = rgb[:,:,0], rgb[:,:,1], rgb[:,:,2]
