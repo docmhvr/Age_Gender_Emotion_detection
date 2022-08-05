@@ -5,6 +5,7 @@ from keras.layers import Flatten
 from keras.layers import Dropout
 from keras.layers import Dense
 from keras import Model
+from sklearn.svm import l1_min_c
 
 def compile_emotion_model(Input):
     input = Input(shape=(48, 48, 1))
@@ -17,7 +18,7 @@ def compile_emotion_model(Input):
     dense = Flatten()(cnn3)
     dense = Dropout(0.3)(dense)
     dense = Dense(256, activation='relu')(dense)
-    output = Dense(7, activation='softmax', name='race', kernel_regularizer=L1(1))(dense)
+    output = Dense(7, activation='softmax', name='race', kernel_regularizer=l1_min_c(1))
     emotion_model = Model(input, output)
     emotion_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['categorical_accuracy'])
     # emotion_model.fit(input, y, epochs=50, batch_size=32, verbose=0)
