@@ -3,6 +3,7 @@ from PIL import Image
 import numpy as np
 from mtcnn import MTCNN
 import pickle
+import emotion
 
 emotion_dict = {
     0: 'Surprise',
@@ -20,7 +21,7 @@ detector = MTCNN()
 # load the model
 sex_model = pickle.load(open('./../model/sex-model-final.pkl', 'rb'))
 age_model = pickle.load(open('./../model/age-model-final.pkl', 'rb'))
-emotion_model = pickle.load(open('./../model/emotion-model-final.pkl', 'rb'))
+# emotion_model = pickle.load(open('./../model/emotion-model-final.pkl', 'rb'))
 
 def rgb2gray(rgb):
     r, g, b = rgb[:,:,0], rgb[:,:,1], rgb[:,:,2]
@@ -50,11 +51,13 @@ def detect_face(img):
         # create predictions
         # sex_preds = sex_model.predict(center_img.reshape(1,224,224,3))[0][0]
         # age_preds = age_model.predict(center_img.reshape(1,224,224,3))[0][0]
-        sex_preds = age_preds = emotion_preds = 0
+        sex_preds = age_preds = 0
         
         # convert to grey scale then predict using the emotion model
         grey_img = np.array(Image.fromarray(center_img_k).resize([48, 48]))
-        # emotion_preds = emotion_model.predict(rgb2gray(grey_img).reshape(1, 48, 48, 1))
+        # Emotion model
+        emotion_model = emotion.compile_model()
+        emotion_preds = emotion_model.predict(rgb2gray(grey_img).reshape(1, 48, 48, 1))
         # output to the cv2
         return_res.append([top, right, bottom, left, sex_preds, age_preds, emotion_preds])
 
